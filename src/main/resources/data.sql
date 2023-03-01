@@ -1,5 +1,5 @@
 insert into site (id, name, description, base_url)
-values(1, 'snowmoscow', 'Зимний фестиваль Снега и Льда в Москве', 'https://snowmoscow.ru/');
+values(1,'snowmoscow', 'Зимний фестиваль Снега и Льда в Москве', 'https://snowmoscow.ru/');
 
 insert into page (site_id, id, path_name)
 values ( 1, 1, 'main');
