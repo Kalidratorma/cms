@@ -9,7 +9,6 @@ import java.net.URI;
 public class Helmet {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JsonIgnore
     private Integer id;
     private String title;
     private String description;

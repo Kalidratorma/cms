@@ -7,7 +7,6 @@ import jakarta.persistence.*;
 public class Section {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JsonIgnore
     private Integer id;
     private String name;
     private String title;

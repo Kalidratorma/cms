@@ -9,7 +9,6 @@ import java.util.List;
 public class Navigation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JsonIgnore
     private Integer id;
     @OneToMany(mappedBy = "navigation")
     //@JsonIgnore

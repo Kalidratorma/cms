@@ -7,7 +7,6 @@ import jakarta.persistence.*;
 public class NavLink {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JsonIgnore
     private Integer id;
     private String label;
     private String link;

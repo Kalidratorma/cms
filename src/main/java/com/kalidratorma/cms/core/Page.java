@@ -9,7 +9,6 @@ import java.util.List;
 public class Page {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JsonIgnore
     private Integer id;
 
     private String pathName;
