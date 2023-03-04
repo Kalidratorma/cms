@@ -1,16 +1,17 @@
 package com.kalidratorma.cms.core.site;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Entity
 @Table(name = "site",
         indexes = {@Index(name = "IDX_SITE_NAME", columnList = "name"),
                 @Index(name = "IDX_SITE_BASE_URL", columnList = "baseUrl")})
+@JsonFilter("SiteFilter")
 public class Site {
     @TableGenerator(
             name = "siteGen",
@@ -32,7 +33,6 @@ public class Site {
 
     @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL, CascadeType.PERSIST, CascadeType.MERGE}, mappedBy = "site")
     @JsonManagedReference
-    // @JsonIgnore
     private List<Page> pageList;
 
     public Site() {
@@ -92,7 +92,7 @@ public class Site {
                 "name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", baseUrl='" + baseUrl + '\'' +
-                ", pageList=" + pageList +
+                ", pageList=" + pageList.stream().map(Page::getPathName).collect(Collectors.joining(",")) +
                 '}';
     }
 }

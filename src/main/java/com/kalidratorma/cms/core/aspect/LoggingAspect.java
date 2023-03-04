@@ -22,12 +22,17 @@ public class LoggingAspect {
         String methodName = methodSignature.getName();
         Logger logger = LoggerFactory.getLogger(methodSignature.getClass());
         List<String> params = List.of(methodSignature.getParameterNames());
-        StringBuffer paramsStringBuffer = new StringBuffer("");
-        params.stream().forEach(s -> paramsStringBuffer.append(s).append("=[{}],"));
-        logger.info(methodName + " called with params "
-                + paramsStringBuffer.deleteCharAt(paramsStringBuffer.length()-1),
-                joinPoint.getArgs());
+        if (params.isEmpty()) {
+            logger.info("SiteController method " + methodName + " called");
+        } else {
+            StringBuffer paramsStringBuffer = new StringBuffer("");
+            params.stream().forEach(s -> paramsStringBuffer.append(s).append("=[{}],"));
+            logger.info("SiteController method " + methodName + " called with params "
+                            + paramsStringBuffer.deleteCharAt(paramsStringBuffer.length() - 1),
+                    joinPoint.getArgs());
+        }
         Object targetMethodResult = joinPoint.proceed();
+        logger.info("SiteController method " + methodName + " ended");
         return targetMethodResult;
     }
 }
