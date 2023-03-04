@@ -7,7 +7,7 @@ import jakarta.persistence.*;
 public class NavLink {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
     private String label;
     private String link;
 
@@ -23,11 +23,11 @@ public class NavLink {
         this.link = link;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

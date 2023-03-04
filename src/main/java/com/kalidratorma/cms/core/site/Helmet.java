@@ -7,7 +7,7 @@ import jakarta.persistence.*;
 public class Helmet {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
     private String title;
     private String description;
     private String url;
@@ -25,11 +25,11 @@ public class Helmet {
         this.url = url;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

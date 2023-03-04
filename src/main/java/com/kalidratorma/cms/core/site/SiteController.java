@@ -1,14 +1,9 @@
 package com.kalidratorma.cms.core.site;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-
-import java.net.URI;
 
 @RestController
 public class SiteController {
@@ -16,19 +11,11 @@ public class SiteController {
     @Autowired
     private SiteRepository siteRepository;
 
-    @Autowired
-    private Environment environment;
-
     @PostMapping("/site")
-    public ResponseEntity<Site> createSite(
+    public ResponseEntity<String> createSite(
             @RequestBody Site site) {
-        Site savedSite = siteRepository.save(site);
-        URI location = ServletUriComponentsBuilder
-                .fromCurrentRequest()
-                .path("/{siteName}")
-                .buildAndExpand(savedSite.getName())
-                .toUri();
-        return ResponseEntity.created(location).build();
+        siteRepository.save(site);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @GetMapping("/site/{siteName}")
@@ -38,22 +25,30 @@ public class SiteController {
         if (site == null) {
             throw new RuntimeException("Unable to Find Site with name " + siteName);
         }
-        //String port = environment.getProperty("local.server.port");
         return site;
     }
 
     @PutMapping("/site")
-    public ResponseEntity<Site> updateSite(
+    public ResponseEntity<String> updateSite(
             @RequestBody Site site) {
         Site origSite = siteRepository.findByName(site.getName());
+        if (origSite == null) {
+            throw new RuntimeException("Unable to Find Site with name " + site.getName());
+        }
+        site.setId(origSite.getId());
+        siteRepository.save(site);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 
-        Site savedSite = siteRepository.save(site);
-        URI location = ServletUriComponentsBuilder
-                .fromCurrentRequest()
-                .path("/{siteName}")
-                .buildAndExpand(savedSite.getName())
-                .toUri();
-        return ResponseEntity.created(location).build();
+    @DeleteMapping("/site/{siteName}")
+    public ResponseEntity<String> deleteSite(
+            @PathVariable String siteName) {
+        Site origSite = siteRepository.findByName(siteName);
+        if (origSite == null) {
+            throw new RuntimeException("Unable to Find Site with name " + siteName);
+        }
+        siteRepository.deleteById(origSite.getId());
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @GetMapping("/site/{siteName}/{pathName}")
@@ -71,8 +66,6 @@ public class SiteController {
         if (page == null) {
             throw new RuntimeException("Unable to Find Page ["+pathName+"] for Site [" + siteName +"]");
         }
-
-        //String port = environment.getProperty("local.server.port");
         return page;
     }
 }

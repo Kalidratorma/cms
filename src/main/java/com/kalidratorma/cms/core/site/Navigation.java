@@ -9,7 +9,7 @@ import java.util.List;
 public class Navigation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
     @OneToMany(mappedBy = "navigation")
     //@JsonIgnore
     private List<NavLink> links;
@@ -24,11 +24,11 @@ public class Navigation {
         this.links = links;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
