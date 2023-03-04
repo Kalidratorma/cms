@@ -1,4 +1,4 @@
-package com.kalidratorma.cms.core;
+package com.kalidratorma.cms.core.site;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

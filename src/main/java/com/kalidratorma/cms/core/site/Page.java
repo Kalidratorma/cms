@@ -1,4 +1,4 @@
-package com.kalidratorma.cms.core;
+package com.kalidratorma.cms.core.site;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;

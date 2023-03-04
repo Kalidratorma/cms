@@ -1,4 +1,4 @@
-package com.kalidratorma.cms.core;
+package com.kalidratorma.cms.core.site;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
@@ -10,8 +10,11 @@ public class Site {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
+    @Column(unique = true)
     private String name;
     private String description;
+    @Column(unique = true)
     private String baseUrl;
 
     @OneToMany(mappedBy = "site")
