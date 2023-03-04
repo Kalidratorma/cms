@@ -1,18 +1,29 @@
 package com.kalidratorma.cms.core.site;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 @Entity
+@Table(name = "nav_link")
 public class NavLink {
+    @TableGenerator(
+            name = "navLinkGen",
+            table = "ID_GEN",
+            pkColumnName = "GEN_KEY",
+            valueColumnName = "GEN_VALUE",
+            pkColumnValue = "nav_link_id",
+            allocationSize = 1)
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.TABLE, generator = "navLinkGen")
+    @Column(name = "id", updatable = false)
     private Long id;
     private String label;
     private String link;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnore
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JsonBackReference
     private Navigation navigation;
 
     public NavLink() {

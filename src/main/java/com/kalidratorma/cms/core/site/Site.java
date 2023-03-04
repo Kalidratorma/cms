@@ -1,24 +1,38 @@
 package com.kalidratorma.cms.core.site;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.util.List;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 @Entity
+@Table(name = "site",
+        indexes = {@Index(name = "IDX_SITE_NAME", columnList = "name"),
+                @Index(name = "IDX_SITE_BASE_URL", columnList = "baseUrl")})
 public class Site {
+    @TableGenerator(
+            name = "siteGen",
+            table = "ID_GEN",
+            pkColumnName = "GEN_KEY",
+            valueColumnName = "GEN_VALUE",
+            pkColumnValue = "site_id",
+            allocationSize = 1)
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.TABLE, generator = "siteGen")
+    @Column(name = "id", updatable = false)
     private Long id;
 
-    @Column(unique = true)
+    @Column(unique = true, nullable = false)
     private String name;
     private String description;
-    @Column(unique = true)
+    @Column(unique = true, nullable = false)
     private String baseUrl;
 
-    @OneToMany(mappedBy = "site")
-   // @JsonIgnore
+    @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL, CascadeType.PERSIST, CascadeType.MERGE}, mappedBy = "site")
+    @JsonManagedReference
+    // @JsonIgnore
     private List<Page> pageList;
 
     public Site() {
