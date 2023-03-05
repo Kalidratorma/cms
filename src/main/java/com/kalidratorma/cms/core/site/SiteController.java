@@ -1,14 +1,19 @@
 package com.kalidratorma.cms.core.site;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ser.FilterProvider;
 import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
 @RestController
@@ -69,6 +74,25 @@ public class SiteController {
         }
         siteRepository.deleteById(origSite.getId());
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/siteAsFile/{siteName}",
+            produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    public @ResponseBody byte[] getSiteAsFile(
+            @PathVariable String siteName) throws IOException {
+
+        Site site = siteRepository.findByName(siteName);
+        if (site == null) {
+            throw new RuntimeException("Unable to Find Site with name " + siteName);
+        }
+
+        ObjectMapper mapper = new ObjectMapper();
+        FilterProvider filterProvider = new SimpleFilterProvider()
+                .addFilter("SiteFilter", SimpleBeanPropertyFilter.serializeAll());
+        mapper.setFilterProvider(filterProvider);
+
+        String json = mapper.writeValueAsString(site);
+        return json.getBytes();
     }
 
     @GetMapping("/site/{siteName}/{pathName}")
