@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.ser.FilterProvider;
 import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.FileSystemResource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -13,7 +13,6 @@ import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.List;
 
 @RestController
@@ -26,9 +25,6 @@ public class SiteController {
     @GetMapping("/site")
     public MappingJacksonValue readSites() {
         List<Site> siteList = siteRepository.findAll();
-        if (siteList == null) {
-            throw new RuntimeException("Unable to Find any Site");
-        }
         SimpleBeanPropertyFilter filter = SimpleBeanPropertyFilter.serializeAllExcept("pageList");
         FilterProvider filters = new SimpleFilterProvider().addFilter("SiteFilter", filter);
         MappingJacksonValue mapping = new MappingJacksonValue(siteList);
@@ -78,28 +74,29 @@ public class SiteController {
 
     @GetMapping(value = "/siteAsFile/{siteName}",
             produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
-    public @ResponseBody byte[] getSiteAsFile(
+    public @ResponseBody ResponseEntity getSiteAsFile(
             @PathVariable String siteName) throws IOException {
 
         Site site = siteRepository.findByName(siteName);
         if (site == null) {
             throw new RuntimeException("Unable to Find Site with name " + siteName);
         }
-
         ObjectMapper mapper = new ObjectMapper();
         FilterProvider filterProvider = new SimpleFilterProvider()
                 .addFilter("SiteFilter", SimpleBeanPropertyFilter.serializeAll());
         mapper.setFilterProvider(filterProvider);
-
         String json = mapper.writeValueAsString(site);
-        return json.getBytes();
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.add("content-disposition", "attachment; filename=" + siteName + ".json");
+        ResponseEntity respEntity = new ResponseEntity(json.getBytes(), responseHeaders, HttpStatus.OK);
+        return respEntity;
     }
 
     @GetMapping("/site/{siteName}/{pathName}")
-    public Page retrievePage (
+    public Page retrievePage(
             @PathVariable String siteName,
             @PathVariable String pathName
-            ) {
+    ) {
         Site site = siteRepository.findByName(siteName);
         if (site == null) {
             throw new RuntimeException("Unable to Find Site with name " + siteName);
@@ -108,7 +105,7 @@ public class SiteController {
                 .filter(page1 -> pathName.equals(page1.getPathName()))
                 .findAny().orElse(null);
         if (page == null) {
-            throw new RuntimeException("Unable to Find Page ["+pathName+"] for Site [" + siteName +"]");
+            throw new RuntimeException("Unable to Find Page [" + pathName + "] for Site [" + siteName + "]");
         }
         return page;
     }
