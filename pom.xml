@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.kalidratorma.cms</groupId>
 	<artifactId>core</artifactId>
-	<version>0.0.7-SNAPSHOT</version>
+	<version>0.0.8-SNAPSHOT</version>
 	<name>core</name>
 	<description>core</description>
 	<properties>
@@ -43,8 +43,8 @@
 			<optional>true</optional>
 		</dependency>
 		<dependency>
-			<groupId>com.h2database</groupId>
-			<artifactId>h2</artifactId>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
