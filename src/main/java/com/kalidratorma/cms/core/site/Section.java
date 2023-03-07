@@ -23,7 +23,7 @@ public class Section {
     private String title;
     private String description;
 
-    @Lob
+    @Column(columnDefinition="text")
     private String content;
 
     @ManyToOne(fetch = FetchType.EAGER)
