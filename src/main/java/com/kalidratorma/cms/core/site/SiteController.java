@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.util.List;
 
 @RestController
+@CrossOrigin(originPatterns = "*")
 public class SiteController {
 
     @Autowired
