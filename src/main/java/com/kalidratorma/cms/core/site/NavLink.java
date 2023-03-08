@@ -22,6 +22,9 @@ public class NavLink {
     private String label;
     private String link;
 
+    @Column(columnDefinition="boolean default false")
+    private boolean isExternal;
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JsonBackReference
     private Navigation navigation;
@@ -29,9 +32,10 @@ public class NavLink {
     public NavLink() {
     }
 
-    public NavLink(String label, String link) {
+    public NavLink(String label, String link, boolean isExternal) {
         this.label = label;
         this.link = link;
+        this.isExternal = isExternal;
     }
 
     public Long getId() {
@@ -58,6 +62,14 @@ public class NavLink {
         this.link = link;
     }
 
+    public boolean isExternal() {
+        return isExternal;
+    }
+
+    public void setExternal(boolean external) {
+        isExternal = external;
+    }
+
     public Navigation getNavigation() {
         return navigation;
     }
@@ -71,6 +83,7 @@ public class NavLink {
         return "NavLink{" +
                 "label='" + label + '\'' +
                 ", link='" + link + '\'' +
+                ", isExternal='" + isExternal + '\'' +
                 '}';
     }
 }
