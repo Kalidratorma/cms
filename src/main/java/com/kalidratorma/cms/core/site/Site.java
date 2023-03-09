@@ -2,12 +2,19 @@ package com.kalidratorma.cms.core.site;
 
 import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-@JsonIgnoreProperties(ignoreUnknown = true)
 @Entity
+@Data
+@SuperBuilder
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "site",
         indexes = {@Index(name = "IDX_SITE_NAME", columnList = "name"),
                 @Index(name = "IDX_SITE_BASE_URL", columnList = "baseUrl")})
@@ -34,57 +41,6 @@ public class Site {
     @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL, CascadeType.PERSIST, CascadeType.MERGE}, mappedBy = "site")
     @JsonManagedReference
     private List<Page> pageList;
-
-    public Site() {
-    }
-
-    public Site(Long id, String name, String description, String baseUrl, List<Page> pageList) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.baseUrl = baseUrl;
-        this.pageList = pageList;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getBaseUrl() {
-        return baseUrl;
-    }
-
-    public void setBaseUrl(String baseUrl) {
-        this.baseUrl = baseUrl;
-    }
-
-    public List<Page> getPageList() {
-        return pageList;
-    }
-
-    public void setPageList(List<Page> pageList) {
-        this.pageList = pageList;
-    }
 
     @Override
     public String toString() {

@@ -1,14 +1,22 @@
 package com.kalidratorma.cms.core.site;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 
 import java.util.List;
 
-@JsonIgnoreProperties(ignoreUnknown = true)
 @Entity
+@Data
+@SuperBuilder
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString(callSuper = true)
 @Table(name = "page",
         indexes = {@Index(name = "IDX_PAGE_PATH_NAME", columnList = "path_name")
 //                ,
@@ -43,72 +51,4 @@ public class Page {
     @ManyToOne(fetch = FetchType.EAGER)
     @JsonBackReference
     private Site site;
-
-    public Page() {
-    }
-
-    public Page(String pathName, Helmet helmet, Navigation nav, List<Section> sections) {
-        this.pathName = pathName;
-        this.helmet = helmet;
-        this.nav = nav;
-        this.sections = sections;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getPathName() {
-        return pathName;
-    }
-
-    public void setPathName(String pathName) {
-        this.pathName = pathName;
-    }
-
-    public Helmet getHelmet() {
-        return helmet;
-    }
-
-    public void setHelmet(Helmet helmet) {
-        this.helmet = helmet;
-    }
-
-    public Navigation getNav() {
-        return nav;
-    }
-
-    public void setNav(Navigation nav) {
-        this.nav = nav;
-    }
-
-    public List<Section> getSections() {
-        return sections;
-    }
-
-    public void setSections(List<Section> sections) {
-        this.sections = sections;
-    }
-
-    public Site getSite() {
-        return site;
-    }
-
-    public void setSite(Site site) {
-        this.site = site;
-    }
-
-    @Override
-    public String toString() {
-        return "Page{" +
-                "pathName='" + pathName + '\'' +
-                ", helmet=" + helmet +
-                ", nav=" + nav +
-                ", sections=" + sections +
-                '}';
-    }
 }

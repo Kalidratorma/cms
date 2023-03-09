@@ -1,11 +1,19 @@
 package com.kalidratorma.cms.core.site;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 
-@JsonIgnoreProperties(ignoreUnknown = true)
 @Entity
+@Data
+@SuperBuilder
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString(callSuper = true)
 @Table(name = "nav_link")
 public class NavLink {
     @TableGenerator(
@@ -28,62 +36,4 @@ public class NavLink {
     @ManyToOne(fetch = FetchType.EAGER)
     @JsonBackReference
     private Navigation navigation;
-
-    public NavLink() {
-    }
-
-    public NavLink(String label, String link, boolean isExternal) {
-        this.label = label;
-        this.link = link;
-        this.isExternal = isExternal;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getLabel() {
-        return label;
-    }
-
-    public void setLabel(String label) {
-        this.label = label;
-    }
-
-    public String getLink() {
-        return link;
-    }
-
-    public void setLink(String link) {
-        this.link = link;
-    }
-
-    public boolean isExternal() {
-        return isExternal;
-    }
-
-    public void setExternal(boolean external) {
-        isExternal = external;
-    }
-
-    public Navigation getNavigation() {
-        return navigation;
-    }
-
-    public void setNavigation(Navigation navigation) {
-        this.navigation = navigation;
-    }
-
-    @Override
-    public String toString() {
-        return "NavLink{" +
-                "label='" + label + '\'' +
-                ", link='" + link + '\'' +
-                ", isExternal='" + isExternal + '\'' +
-                '}';
-    }
 }

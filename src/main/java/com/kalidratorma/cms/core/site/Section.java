@@ -5,7 +5,6 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.ColumnTransformer;
 
@@ -16,7 +15,6 @@ import java.util.Map;
 @SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString(callSuper = true)
 @Table(name = "section")
 public class Section {
     @TableGenerator(
@@ -42,4 +40,14 @@ public class Section {
     @ManyToOne(fetch = FetchType.EAGER)
     @JsonBackReference
     private Page page;
+
+    @Override
+    public String toString() {
+        return "Section{" +
+                "name='" + name + '\'' +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", content='" + content.hashCode() + '\'' +
+                '}';
+    }
 }

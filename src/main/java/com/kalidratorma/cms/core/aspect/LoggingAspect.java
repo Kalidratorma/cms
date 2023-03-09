@@ -25,8 +25,8 @@ public class LoggingAspect {
         if (params.isEmpty()) {
             logger.info("SiteController method " + methodName + " called");
         } else {
-            StringBuffer paramsStringBuffer = new StringBuffer("");
-            params.stream().forEach(s -> paramsStringBuffer.append(s).append("=[{}],"));
+            StringBuffer paramsStringBuffer = new StringBuffer();
+            params.forEach(s -> paramsStringBuffer.append(s).append("=[{}],"));
             logger.info("SiteController method " + methodName + " called with params "
                             + paramsStringBuffer.deleteCharAt(paramsStringBuffer.length() - 1),
                     joinPoint.getArgs());

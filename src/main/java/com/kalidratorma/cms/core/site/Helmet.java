@@ -1,11 +1,19 @@
 package com.kalidratorma.cms.core.site;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 
-@JsonIgnoreProperties(ignoreUnknown = true)
 @Entity
+@Data
+@SuperBuilder
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString(callSuper = true)
 @Table(name = "helmet",
         indexes = {@Index(name = "IDX_HELMET_TITLE", columnList = "title"),
                 @Index(name = "IDX_HELMET_URL", columnList = "url")
@@ -31,62 +39,4 @@ public class Helmet {
     @OneToOne(fetch = FetchType.EAGER)
     @JsonBackReference
     private Page page;
-
-    public Helmet() {
-    }
-
-    public Helmet(String title, String description, String url) {
-        this.title = title;
-        this.description = description;
-        this.url = url;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
-    public Page getPage() {
-        return page;
-    }
-
-    public void setPage(Page page) {
-        this.page = page;
-    }
-
-    @Override
-    public String toString() {
-        return "Helmet{" +
-                "title='" + title + '\'' +
-                ", description='" + description + '\'' +
-                ", url=" + url +
-                '}';
-    }
 }
