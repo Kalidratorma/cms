@@ -23,8 +23,8 @@ public class Section {
     private String title;
     private String description;
 
-    @Column(columnDefinition="text")
-    private String content;
+    @Column(columnDefinition="jsonb")
+    private Object content;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JsonBackReference
@@ -33,7 +33,7 @@ public class Section {
     public Section() {
     }
 
-    public Section(String name, String title, String description, String content) {
+    public Section(String name, String title, String description, Object content) {
         this.name = name;
         this.title = title;
         this.description = description;
@@ -72,11 +72,11 @@ public class Section {
         this.description = description;
     }
 
-    public String getContent() {
+    public Object getContent() {
         return content;
     }
 
-    public void setContent(String content) {
+    public void setContent(Object content) {
         this.content = content;
     }
 
