@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.kalidratorma.cms</groupId>
 	<artifactId>core</artifactId>
-	<version>0.0.12-SNAPSHOT</version>
+	<version>0.0.13-SNAPSHOT</version>
 	<name>core</name>
 	<description>core</description>
 	<properties>
@@ -55,7 +55,8 @@
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
-			<version>1.18.4</version>
+			<version>1.18.26</version>
+			<scope>provided</scope>
 		</dependency>
 	</dependencies>
 	<build>
