@@ -5,7 +5,8 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
-import org.springframework.core.env.Environment;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -18,9 +19,12 @@ import java.util.function.Function;
 @Service
 public class JwtService {
 
-    private Environment environment;
+    private final String SECRET_KEY;
 
-    private final String SECRET_KEY = environment.getProperty("jwt_secret_key");
+    @Autowired
+    public JwtService(@Value("${jwt_secret_key}") String key) {
+        SECRET_KEY = key;
+    }
 
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
