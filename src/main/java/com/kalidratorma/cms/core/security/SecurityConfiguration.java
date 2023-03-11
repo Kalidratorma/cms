@@ -24,6 +24,8 @@ public class SecurityConfiguration {
                 .csrf()
                 .disable()
                 .authorizeHttpRequests()
+                .requestMatchers("/actuator/**")
+                .permitAll()
                 .requestMatchers("/auth/*")
                 .permitAll()
                 .requestMatchers(HttpMethod.GET, "/site/*")
