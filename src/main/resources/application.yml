@@ -1,0 +1,21 @@
+server:
+  port: 8000
+spring:
+  datasource:
+    url: jdbc:postgresql://${POSTGRES_HOST}:5432/${POSTGRES_DB}
+    driver-class-name: org.postgresql.Driver
+    username: ${POSTGRES_USER}
+    password: ${POSTGRES_PASSWORD}
+  application:
+    name: cms-core
+  jpa:
+    show-sql: true
+    defer-datasource-initialization: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+    database: postgresql
+    database_platform: org.hibernate.dialect.PostgreSQLDialect
+jwt_secret_key: ${JWT_SECRET_KEY}
