@@ -2,7 +2,7 @@ server:
   port: 8443
   ssl:
     enabled: true
-    key-store: classpath:skvazy.p12
+    key-store: classpath:/tls/skvazy.p12
     key-store-password: ${TLS_PASSWORD}
     keyStoreType: PKCS12
     keyAlias: skvazy
