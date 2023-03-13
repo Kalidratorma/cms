@@ -1,5 +1,7 @@
 package com.kalidratorma.cms.core.security.user;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.kalidratorma.cms.core.site.Site;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,6 +13,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Data
@@ -37,7 +40,12 @@ public class User implements UserDetails {
 
     @Column(unique = true)
     private String email;
+
+    @JsonIgnore
     private String password;
+
+    @OneToMany
+    private Set<Site> site;
 
     private boolean enabled;
 

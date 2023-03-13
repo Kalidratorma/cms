@@ -34,6 +34,8 @@ public class SecurityConfiguration {
                 .requestMatchers(HttpMethod.POST).hasAuthority("ADMIN")
                 .requestMatchers(HttpMethod.DELETE).hasAuthority("ADMIN")
                 .requestMatchers(HttpMethod.PUT,"/site/*").hasAnyAuthority("ADMIN","MODERATOR")
+                .requestMatchers("/user").hasAuthority("ADMIN")
+                .requestMatchers("/user/*").hasAuthority("ADMIN")
                 .anyRequest()
                 .authenticated()
                 .and()
