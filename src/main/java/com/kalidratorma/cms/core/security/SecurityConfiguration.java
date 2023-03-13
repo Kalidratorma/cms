@@ -30,6 +30,7 @@ public class SecurityConfiguration {
                 .permitAll()
                 .requestMatchers(HttpMethod.GET, "/site/*")
                 .permitAll()
+                .requestMatchers(HttpMethod.GET, "/site/*", "/auth/*").hasAnyRole()
                 .requestMatchers(HttpMethod.GET, "/site").hasAuthority("ADMIN")
                 .requestMatchers(HttpMethod.POST).hasAuthority("ADMIN")
                 .requestMatchers(HttpMethod.DELETE).hasAuthority("ADMIN")
