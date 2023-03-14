@@ -22,8 +22,7 @@ public class SecurityConfiguration {
 
     @Bean
     CorsFilter corsFilter() {
-        CorsFilter filter = new CorsFilter();
-        return filter;
+        return new CorsFilter();
     }
 
     @Bean
