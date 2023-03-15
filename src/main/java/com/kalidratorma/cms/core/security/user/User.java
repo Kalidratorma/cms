@@ -1,6 +1,7 @@
 package com.kalidratorma.cms.core.security.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.kalidratorma.cms.core.site.Site;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -13,7 +14,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Data
@@ -41,17 +41,19 @@ public class User implements UserDetails {
     @Column(unique = true)
     private String email;
 
-    @JsonIgnore
+    @JsonProperty(access=JsonProperty.Access.WRITE_ONLY)
     private String password;
 
-    @OneToMany
-    private Set<Site> site;
+    @OneToMany(fetch = FetchType.LAZY)
+    private List<Site> sites;
 
     private boolean enabled;
 
     @Enumerated(EnumType.STRING)
     private Role role;
+
     @Override
+    @JsonIgnore
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(role.name()));
     }
@@ -62,16 +64,19 @@ public class User implements UserDetails {
     }
 
     @Override
+    @JsonIgnore
     public boolean isAccountNonExpired() {
         return true;
     }
 
     @Override
+    @JsonIgnore
     public boolean isAccountNonLocked() {
         return true;
     }
 
     @Override
+    @JsonIgnore
     public boolean isCredentialsNonExpired() {
         return true;
     }

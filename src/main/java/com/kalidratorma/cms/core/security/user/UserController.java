@@ -1,11 +1,17 @@
 package com.kalidratorma.cms.core.security.user;
 
+import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
+import com.kalidratorma.cms.core.site.Site;
+import com.kalidratorma.cms.core.site.SiteRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.json.MappingJacksonValue;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
+import static com.kalidratorma.cms.core.utils.ControllerUtils.getFilteredMapper;
 
 @RestController
 @RequestMapping("/user")
@@ -14,42 +20,51 @@ public class UserController {
 
     private final UserRepository userRepository;
 
+    private final SiteRepository siteRepository;
+
+    private final PasswordEncoder passwordEncoder;
+
     @GetMapping
-    public ResponseEntity<List<User>> readUsers() {
-        return ResponseEntity.ok(userRepository.findAll());
+    public MappingJacksonValue readUsers() {
+        List<User> userList = userRepository.findAll();
+        return getFilteredMapper(userList, "SiteFilter"
+                , SimpleBeanPropertyFilter.filterOutAllExcept("id", "name"));
     }
 
     @PostMapping
-    public HttpStatus createUser(
-            @RequestBody User user) {
+    public HttpStatus createUser(@RequestBody User user) {
         userRepository.save(user);
         return HttpStatus.CREATED;
     }
-    @GetMapping("/{username}")
-    public ResponseEntity<User> readUser(
-            @PathVariable String username) {
-        User user = userRepository.findByUsername(username)
-                .orElseThrow();
-        return ResponseEntity.ok(user);
+
+    @GetMapping(value = "/{username}")
+    public MappingJacksonValue readUser(@PathVariable String username) {
+        User user = userRepository.findByUsername(username).orElseThrow();
+        return getFilteredMapper(user, "SiteFilter"
+                , SimpleBeanPropertyFilter.filterOutAllExcept("id", "name"));
+
     }
-    
+
     @PutMapping
-    public HttpStatus updateUser(
-            @RequestBody User user) {
-        User origUser = userRepository.findByUsername(user.getUsername())
-                .orElseThrow();
+    public HttpStatus updateUser(@RequestBody User user) {
+        User origUser = userRepository.findByUsername(user.getUsername()).orElseThrow();
+        if (!user.getSites().isEmpty()) {
+            List<Site> siteList = siteRepository
+                    .findAllById(user.getSites().stream().map(Site::getId).toList());
+            user.setSites(siteList);
+        }
+        if (user.getPassword() != null && !user.getPassword().isEmpty()) {
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+        }
         user.setId(origUser.getId());
         userRepository.save(user);
         return HttpStatus.OK;
     }
 
     @DeleteMapping("/{userName}")
-    public HttpStatus deleteUser(
-            @PathVariable String userName) {
-        User origUser = userRepository.findByUsername(userName)
-                .orElseThrow();
+    public HttpStatus deleteUser(@PathVariable String userName) {
+        User origUser = userRepository.findByUsername(userName).orElseThrow();
         userRepository.deleteById(origUser.getId());
         return HttpStatus.OK;
     }
-
 }

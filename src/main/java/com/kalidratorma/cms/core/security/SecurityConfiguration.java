@@ -16,8 +16,6 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.List;
 
-import static org.springframework.security.config.Customizer.withDefaults;
-
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
@@ -29,7 +27,7 @@ public class SecurityConfiguration {
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOriginPatterns(List.of("*"));
-        configuration.setAllowedMethods(List.of("GET","POST","PUT","DELETE","OPTIONS"));
+        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("*"));
         configuration.setAllowCredentials(true);
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
@@ -55,7 +53,7 @@ public class SecurityConfiguration {
                 .requestMatchers(HttpMethod.GET, "/site").hasAuthority("ADMIN")
                 .requestMatchers(HttpMethod.POST).hasAuthority("ADMIN")
                 .requestMatchers(HttpMethod.DELETE).hasAuthority("ADMIN")
-                .requestMatchers(HttpMethod.PUT,"/site/*").hasAnyAuthority("ADMIN","MODERATOR")
+                .requestMatchers(HttpMethod.PUT, "/site/*").hasAnyAuthority("ADMIN", "MODERATOR")
                 .requestMatchers("/user").hasAuthority("ADMIN")
                 .requestMatchers("/user/*").hasAuthority("ADMIN")
                 .anyRequest()
