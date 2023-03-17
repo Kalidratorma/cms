@@ -19,15 +19,9 @@ import java.util.List;
 @ToString(callSuper = true)
 @Table(name = "navigation")
 public class Navigation {
-    @TableGenerator(
-            name = "navigationGen",
-            table = "ID_GEN",
-            pkColumnName = "GEN_KEY",
-            valueColumnName = "GEN_VALUE",
-            pkColumnValue = "navigation_id",
-            allocationSize = 1)
+
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE, generator = "navigationGen")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "id", updatable = false)
     private Long id;
     @OneToMany(fetch = FetchType.LAZY, cascade = { CascadeType.ALL,CascadeType.PERSIST,CascadeType.MERGE }, mappedBy = "navigation")

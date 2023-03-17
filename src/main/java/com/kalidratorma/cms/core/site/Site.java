@@ -20,15 +20,9 @@ import java.util.stream.Collectors;
                 @Index(name = "IDX_SITE_BASE_URL", columnList = "baseUrl")})
 @JsonFilter("SiteFilter")
 public class Site {
-    @TableGenerator(
-            name = "siteGen",
-            table = "ID_GEN",
-            pkColumnName = "GEN_KEY",
-            valueColumnName = "GEN_VALUE",
-            pkColumnValue = "site_id",
-            allocationSize = 1)
+
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE, generator = "siteGen")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "id", updatable = false)
     private Long id;
 

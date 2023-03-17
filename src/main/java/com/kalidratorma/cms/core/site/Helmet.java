@@ -16,20 +16,10 @@ import lombok.experimental.SuperBuilder;
 @ToString(callSuper = true)
 @Table(name = "helmet",
         indexes = {@Index(name = "IDX_HELMET_TITLE", columnList = "title"),
-                @Index(name = "IDX_HELMET_URL", columnList = "url")
-//                ,
-//                @Index(name = "IDX_HELMET_PAGE_ID_TITLE", columnList = "page_id, title")
-})
+                @Index(name = "IDX_HELMET_URL", columnList = "url")})
 public class Helmet {
-    @TableGenerator(
-            name = "helmetGen",
-            table = "ID_GEN",
-            pkColumnName = "GEN_KEY",
-            valueColumnName = "GEN_VALUE",
-            pkColumnValue = "helmet_id",
-            allocationSize = 1)
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE, generator = "helmetGen")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "id", updatable = false)
     private Long id;
     private String title;

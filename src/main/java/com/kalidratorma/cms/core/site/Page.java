@@ -18,20 +18,11 @@ import java.util.List;
 @NoArgsConstructor
 @ToString(callSuper = true)
 @Table(name = "page",
-        indexes = {@Index(name = "IDX_PAGE_PATH_NAME", columnList = "path_name")
-//                ,
-//                @Index(name = "IDX_PAGE_SITE_ID_PATH_NAME", columnList = "site_id, path_name")
-})
+        indexes = {@Index(name = "IDX_PAGE_PATH_NAME", columnList = "path_name")})
 public class Page {
-    @TableGenerator(
-            name = "pageGen",
-            table = "ID_GEN",
-            pkColumnName = "GEN_KEY",
-            valueColumnName = "GEN_VALUE",
-            pkColumnValue = "page_id",
-            allocationSize = 1)
+
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE, generator = "pageGen")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "id", updatable = false)
     private Long id;
 

@@ -22,15 +22,9 @@ import java.util.List;
 @Builder
 @Table(name = "sec_user")
 public class User implements UserDetails {
-    @TableGenerator(
-            name = "userGen",
-            table = "ID_GEN",
-            pkColumnName = "GEN_KEY",
-            valueColumnName = "GEN_VALUE",
-            pkColumnValue = "user_id",
-            allocationSize = 1)
+
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE, generator = "userGen")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private int id;
 
     @Column(unique = true)

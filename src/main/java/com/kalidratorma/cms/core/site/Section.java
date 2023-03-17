@@ -17,15 +17,9 @@ import java.util.Map;
 @NoArgsConstructor
 @Table(name = "section")
 public class Section {
-    @TableGenerator(
-            name = "sectionGen",
-            table = "ID_GEN",
-            pkColumnName = "GEN_KEY",
-            valueColumnName = "GEN_VALUE",
-            pkColumnValue = "section_id",
-            allocationSize = 1)
+
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE, generator = "sectionGen")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "id", updatable = false)
     private Long id;
     private String name;

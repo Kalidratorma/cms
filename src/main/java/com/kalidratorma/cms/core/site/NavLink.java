@@ -16,15 +16,9 @@ import lombok.experimental.SuperBuilder;
 @ToString(callSuper = true)
 @Table(name = "nav_link")
 public class NavLink {
-    @TableGenerator(
-            name = "navLinkGen",
-            table = "ID_GEN",
-            pkColumnName = "GEN_KEY",
-            valueColumnName = "GEN_VALUE",
-            pkColumnValue = "nav_link_id",
-            allocationSize = 1)
+
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE, generator = "navLinkGen")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "id", updatable = false)
     private Long id;
     private String label;
