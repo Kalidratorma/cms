@@ -19,3 +19,4 @@ spring:
     database: postgresql
     database_platform: org.hibernate.dialect.PostgreSQLDialect
 jwt_secret_key: ${JWT_SECRET_KEY}
+RESOURCES_DIR: /app/storage
