@@ -47,7 +47,7 @@ public class SecurityConfiguration {
                 .permitAll()
                 .requestMatchers("/auth/*")
                 .permitAll()
-                .requestMatchers(HttpMethod.GET, "/site/*")
+                .requestMatchers(HttpMethod.GET, "/site/*", "/siteAsFile/*")
                 .permitAll()
                 .requestMatchers(HttpMethod.GET, "/site/*", "/auth/*").authenticated()
                 .requestMatchers(HttpMethod.GET, "/site").hasAuthority("ADMIN")
