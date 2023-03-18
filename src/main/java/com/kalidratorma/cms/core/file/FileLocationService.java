@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Date;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -34,10 +35,26 @@ class FileLocationService {
         Site site = siteRepository.findByName(siteName)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         ContentFile contentFile = contentFileRepository
-                .findTopBySiteAndNameOrderByIdDesc(site, fileName)
+                .findTopBySiteIdAndNameOrderByIdDesc(site.getId(), fileName)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
         return fileSystemRepository.findInFileSystem(contentFile.getLocation());
     }
 
+    List<ContentFile> findAllFilesBySiteName(String siteName) {
+        Site site = siteRepository.findByName(siteName)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        return contentFileRepository
+                .findAllBySiteId(site.getId())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+    }
+
+    void deleteFileBySiteName(String siteName, String fileName) {
+        Site site = siteRepository.findByName(siteName)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        contentFileRepository
+                .deleteBySiteIdAndName(site.getId(), fileName);
+    }
 }

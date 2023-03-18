@@ -9,14 +9,18 @@ spring:
     username: ${POSTGRES_USER}
     password: ${POSTGRES_PASSWORD}
   jpa:
-    show-sql: true
+    #    show-sql: true
     defer-datasource-initialization: true
     hibernate:
       ddl-auto: update
-    properties:
-      hibernate:
-        format_sql: true
+    #    properties:
+    #      hibernate:
+    #        format_sql: true
     database: postgresql
     database_platform: org.hibernate.dialect.PostgreSQLDialect
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 100MB
 jwt_secret_key: ${JWT_SECRET_KEY}
 RESOURCES_DIR: /app/storage

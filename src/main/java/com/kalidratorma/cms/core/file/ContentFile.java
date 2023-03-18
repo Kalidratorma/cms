@@ -1,5 +1,6 @@
 package com.kalidratorma.cms.core.file;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.kalidratorma.cms.core.site.Site;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -22,12 +23,11 @@ class ContentFile {
 
     String name;
 
+    @JsonIgnore
     String location;
 
-    @Lob
-    byte[] content;
-
     @OneToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
     private Site site;
 
     public ContentFile (Site site, String name, String location) {
