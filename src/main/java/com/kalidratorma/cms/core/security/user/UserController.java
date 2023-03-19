@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -37,9 +38,12 @@ public class UserController {
         return HttpStatus.CREATED;
     }
 
-    @GetMapping(value = "/{username}")
-    public MappingJacksonValue readUser(@PathVariable String username) {
-        User user = userRepository.findByUsername(username).orElseThrow();
+    @GetMapping(value = "/{userName}")
+    public MappingJacksonValue readUser(@PathVariable String userName) {
+        User user = userRepository.findByUsername(userName).orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND
+                        , "Username " + userName + " not found")
+        );
         return getFilteredMapper(user, "SiteFilter"
                 , SimpleBeanPropertyFilter.filterOutAllExcept("id", "name"));
 
@@ -47,7 +51,10 @@ public class UserController {
 
     @PutMapping
     public HttpStatus updateUser(@RequestBody User user) {
-        User origUser = userRepository.findByUsername(user.getUsername()).orElseThrow();
+        User origUser = userRepository.findByUsername(user.getUsername()).orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND
+                        , "Username " + user.getUsername() + " not found")
+        );
         if (!user.getSites().isEmpty()) {
             List<Site> siteList = siteRepository
                     .findAllById(user.getSites().stream().map(Site::getId).toList());
@@ -63,7 +70,10 @@ public class UserController {
 
     @DeleteMapping("/{userName}")
     public HttpStatus deleteUser(@PathVariable String userName) {
-        User origUser = userRepository.findByUsername(userName).orElseThrow();
+        User origUser = userRepository.findByUsername(userName).orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND
+                        , "Username " + userName + " not found")
+        );
         userRepository.deleteById(origUser.getId());
         return HttpStatus.OK;
     }

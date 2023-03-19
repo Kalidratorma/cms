@@ -13,6 +13,7 @@ import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -42,12 +43,16 @@ public class SiteController {
 
     @GetMapping("/site/{siteName}")
     public Site readSite(@PathVariable String siteName) {
-        return siteRepository.findByName(siteName).orElseThrow();
+        return siteRepository.findByName(siteName).orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND)
+        );
     }
 
     @PutMapping("/site")
     public ResponseEntity<String> updateSite(@RequestBody Site site) {
-        Site origSite = siteRepository.findByName(site.getName()).orElseThrow();
+        Site origSite = siteRepository.findByName(site.getName()).orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND)
+        );
         User user = userRepository
                 .findByUsername(SecurityContextHolder.getContext().getAuthentication().getName()).orElseThrow();
         ResponseEntity<String> response;
@@ -78,7 +83,7 @@ public class SiteController {
         responseHeaders.add("content-type"
                 , "application/json");
         return new ResponseEntity<>(getFilteredMapper(site, "SiteFilter"
-                    , SimpleBeanPropertyFilter.serializeAll())
+                , SimpleBeanPropertyFilter.serializeAll())
                 , responseHeaders, HttpStatus.OK);
     }
 
