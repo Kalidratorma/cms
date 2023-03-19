@@ -70,14 +70,16 @@ public class SiteController {
     }
 
     @GetMapping(value = "/siteAsFile/{siteName}", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
-    public @ResponseBody ResponseEntity<byte[]> getSiteAsFile(@PathVariable String siteName) {
+    public @ResponseBody ResponseEntity<MappingJacksonValue> getSiteAsFile(@PathVariable String siteName) {
         Site site = siteRepository.findByName(siteName).orElseThrow();
-        String json = getFilteredMapper(site, "SiteFilter"
-                , SimpleBeanPropertyFilter.serializeAll()).toString();
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.add("content-disposition"
                 , "attachment; filename=" + siteName + ".json");
-        return new ResponseEntity<>(json.getBytes(), responseHeaders, HttpStatus.OK);
+        responseHeaders.add("content-type"
+                , "application/json");
+        return new ResponseEntity<>(getFilteredMapper(site, "SiteFilter"
+                    , SimpleBeanPropertyFilter.serializeAll())
+                , responseHeaders, HttpStatus.OK);
     }
 
     @GetMapping("/site/{siteName}/{pathName}")
