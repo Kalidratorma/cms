@@ -1,5 +1,9 @@
 server:
   port: 8000
+  error:
+    include-message: always
+  servlet:
+    context-path: /api
 spring:
   application:
     name: cms-core
