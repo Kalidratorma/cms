@@ -62,6 +62,8 @@ public class UserController {
         }
         if (user.getPassword() != null && !user.getPassword().isEmpty()) {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
+        } else {
+            user.setPassword(origUser.getPassword());
         }
         user.setId(origUser.getId());
         userRepository.save(user);
