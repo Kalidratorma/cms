@@ -34,6 +34,7 @@ public class UserController {
 
     @PostMapping
     public HttpStatus createUser(@RequestBody User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
         return HttpStatus.CREATED;
     }
