@@ -38,7 +38,7 @@ public class User implements UserDetails {
     @JsonProperty(access=JsonProperty.Access.WRITE_ONLY)
     private String password;
 
-    @OneToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY)
     private List<Site> sites;
 
     private boolean enabled;
