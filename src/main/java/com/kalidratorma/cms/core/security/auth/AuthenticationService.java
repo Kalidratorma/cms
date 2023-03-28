@@ -34,6 +34,7 @@ public class AuthenticationService {
         return AuthenticationResponse.builder()
                 .token(JwtToken)
                 .exp(jwtService.extractExpiration(JwtToken))
+                .role(user.getRole())
                 .build();
     }
 
@@ -49,6 +50,7 @@ public class AuthenticationService {
         var JwtToken = jwtService.generateToken(user);
         return AuthenticationResponse.builder()
                 .token(JwtToken)
+                .role(user.getRole())
                 .exp(jwtService.extractExpiration(JwtToken))
                 .build();
     }

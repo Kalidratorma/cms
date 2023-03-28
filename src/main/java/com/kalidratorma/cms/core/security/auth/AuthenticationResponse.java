@@ -1,5 +1,6 @@
 package com.kalidratorma.cms.core.security.auth;
 
+import com.kalidratorma.cms.core.security.user.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,5 +14,6 @@ import java.util.Date;
 @NoArgsConstructor
 public class AuthenticationResponse {
     private String token;
+    private Role role;
     private Date exp;
 }
