@@ -1,4 +1,4 @@
-insert into site (id, name, description, base_url)
+insert into site  (id, name, description, base_url)
 values(1,'snowmoscow', 'Зимний фестиваль Снега и Льда в Москве', 'https://snowmoscow.ru/');
 update ID_GEN set GEN_VALUE=1 where GEN_KEY='site_id';
 
